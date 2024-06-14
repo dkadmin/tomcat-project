@@ -8,15 +8,15 @@ pipeline {
         }
             stage ('Compile') {  
                   steps{
-                    bat label: '', script: 'mvn compile'
+                    sh label: '', script: 'mvn compile'
                     echo "test successful";
                     
                 } 
             }
             stage ('Build') {  
                   steps{
-                    bat label: '', script: 'mvn clean'
-                    bat label: '', script: 'mvn package'
+                    sh label: '', script: 'mvn clean'
+                    sh label: '', script: 'mvn package'
                     echo "build successful";
                     
                 } 
