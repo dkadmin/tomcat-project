@@ -1,12 +1,12 @@
 pipeline {  
     agent any  
     stages {  
-            stage ('Git-Checkout') {  
-                steps{
-                    git credentialsId: 'tomcatcred'  url: 'https://github.com/dkadmin/tomcat-project.git'
-                    echo "Checkout successful";
-                } 
+    stages{
+        stage("Git Checkout"){
+            steps{
+                git credentialsId: 'github', url: 'https://github.com/dkadmin/tomcat-project.git'
             }
+        }
             stage ('Compile') {  
                   steps{
                     bat label: '', script: 'mvn compile'
