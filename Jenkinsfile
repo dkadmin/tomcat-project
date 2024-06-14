@@ -3,7 +3,7 @@ pipeline {
     stages {  
             stage ('Git-Checkout') {  
                 steps{
-                    git credentialsId:  url: 'https://github.com/dkadmin/tomcat-project.git'
+                    git credentialsId: 'tomcatcred'  url: 'https://github.com/dkadmin/tomcat-project.git'
                     echo "Checkout successful";
                 } 
             }
