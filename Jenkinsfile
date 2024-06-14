@@ -28,12 +28,6 @@ pipeline {
                     echo "test successful";
                 } 
             }
-
-             post {
-                always {
-                junit '**/reports/junit/*.xml'
-               }
-         } 
         stage ('Deploy') {
             steps{
             deploy adapters: [tomcat9(credentialsId: 'tomcatcred', path: '', url: 'http://13.201.71.176	:8080/')], contextPath: 'jenkins_calci', onFailure: false, war: '**/*.war'
