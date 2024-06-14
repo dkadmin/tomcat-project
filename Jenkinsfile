@@ -1,8 +1,7 @@
 pipeline {  
     agent any  
     stages {  
-    stages{
-        stage("Git Checkout"){
+        stage ("Git Checkout"){
             steps{
                 git credentialsId: 'github', url: 'https://github.com/dkadmin/tomcat-project.git'
             }
@@ -40,5 +39,4 @@ pipeline {
            }
         }
     }
-}
 }
