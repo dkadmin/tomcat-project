@@ -1,50 +1,62 @@
-pipeline {  
-    agent any  
-    stages {  
-            stage ('Git-Checkout') {  
-                steps{
-                    git credentialsId: 'tomcatcred'  url: 'https://github.com/dkadmin/tomcat-project.git'
-                    echo "Checkout successful";
-                } 
-            }
-            stage ('Compile') {  
-                  steps{
-                    bat label: '', script: 'mvn compile'
-                    echo "test successful";
-                    
-                } 
-            }
-            stage ('Build') {  
-                  steps{
-                    bat label: '', script: 'mvn clean'
-                    bat label: '', script: 'mvn package'
-                    echo "build successful";
-                    
-                } 
-            }
-             stage ('Test') {  
-                  steps{
-                    bat label: '', script: 'mvn test'
-                    echo "test successful";
-                } 
-            }
-
-
-        stage ('Deploy') {
-            steps{
-            deploy adapters: [tomcat9(credentialsId: 'tomcatcred', path: '', url: 'http://13.201.71.176	:8080/')], contextPath: 'simpliearnarfact', onFailure: false, war: '**/*.war'
-             echo "Deploy successful";
+pipeline {
+    agent any
+    
+    stages {
+        stage('Git-Checkout') {
+            steps {
+                // Git checkout step
+                git credentialsId: 'tomcatcred', url: 'https://github.com/dkadmin/tomcat-project.git'
+                echo "Checkout successful"
             }
         }
-        stage ('Monitor') { 
-           steps{ 
-             echo "Now you can monitor!";
-           }
+        
+        stage('Compile') {
+            steps {
+                // Maven compile step
+                sh script: 'mvn compile'
+                echo "Compile successful"
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Maven clean and package steps
+                sh script: 'mvn clean'
+                sh script: 'mvn package'
+                echo "Build successful"
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Maven test step
+                sh script: 'mvn test'
+                echo "Test successful"
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Tomcat deployment step
+                deploy adapters: [tomcat9(credentialsId: 'tomcatcred', path: '', url: 'http://13.201.71.176:8080/')], 
+                       contextPath: 'simpliearnarfact', 
+                       onFailure: false, 
+                       war: '**/*.war'
+                echo "Deploy successful"
+            }
+        }
+        
+        stage('Monitor') {
+            steps {
+                echo "Now you can monitor!"
+            }
         }
     }
- post {
+    
+    post {
         always {
-        junit '**/reports/junit/*.xml'
-       }
- } 
+            // JUnit test result publishing
+            junit '**/reports/junit/*.xml'
+        }
+    }
 }
